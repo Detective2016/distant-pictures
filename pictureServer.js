@@ -104,13 +104,13 @@ parser.on('data', function(data) {
     NodeWebcam.capture('public/'+imageName, opts, function( err, data ) {
     io.emit('newPicture',(imageName+'.jpg'));
     });
-    fs.readFile('public/'+imageName, function (err, data) {
+    fs.readFile('public/'+imageName+'.jpg', function (err, data) {
       sender.sendMail({       
         sender: 'dreamteambmwfs2017@gmail.com',
         to: 'dreamteambmwfs2017@gmail.com',
         subject: 'Here is your picture!',
         body: 'Please see attached for the latest photo you have taken using the mini webcam',
-        attachments: [{'filename': 'myPic.jpg', path: 'public/', 'content': data}]
+        attachments: [{'filename': 'myPic.jpg', 'content': data}]
       }), function(err, success) {
         if (err) {
             // Handle error
