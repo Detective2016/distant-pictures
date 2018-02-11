@@ -109,8 +109,8 @@ parser.on('data', function(data) {
         sender: 'dreamteambmwfs2017@gmail.com',
         to: 'dreamteambmwfs2017@gmail.com',
         subject: 'Here is your picture!',
-        body: 'Please see attached for the latest photo you\'ve taken',
-        attachments: [{'filename': imageName, 'content': data}]
+        body: 'Please see attached for the latest photo you have taken using the mini webcam',
+        attachments: [{'filename': imageName, 'content': data.body}]
       }), function(err, success) {
         if (err) {
             // Handle error
