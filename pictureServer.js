@@ -102,7 +102,7 @@ parser.on('data', function(data) {
     var imageName = new Date().toString().replace(/[&\/\\#,+()$~%.'":*?<>{}\s-]/g, '');
     console.log('saving picture with picture name: '+ imageName);
     NodeWebcam.capture('public/'+imageName, opts, function( err, data ) {
-    io.emit('newPicture',(imageName+'.jpg'));
+      io.emit('newPicture',(imageName+'.jpg'));
     });
     fs.readFile('public/'+imageName+'.jpg', function (err, data) {
       sender.sendMail({       
@@ -110,12 +110,8 @@ parser.on('data', function(data) {
         to: 'dreamteambmwfs2017@gmail.com',
         subject: 'Here is your picture!',
         body: 'Please see attached for the latest photo you have taken using the mini webcam',
-        attachments: [{'filename': 'myPic.jpg', 'content': fs.createReadStream('public/'+imageName+'.jpg')}]
-      }), function(err, success) {
-        if (err) {
-            // Handle error
-        }
-      }
+        attachments: [{'filename': 'myPic.jpg', 'content': 'hello world')}]
+      })
     });
   }
 });
