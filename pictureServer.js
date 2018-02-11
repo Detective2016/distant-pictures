@@ -93,6 +93,7 @@ parser.on('data', function(data) {
     console.log('saving picture with picture name: '+ imageName);
     NodeWebcam.capture('public/'+imageName, opts, function( err, data ) {
     io.emit('newPicture',(imageName+'.jpg'));
+    });
   }
 });
 //----------------------------------------------------------------------------//
