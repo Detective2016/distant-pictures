@@ -77,13 +77,13 @@ var Webcam = NodeWebcam.create( opts ); //starting up the webcam
 //----------------------------------------------------------------------------//
 
 //---------------------- EMAIL SETUP (SMTP) ----------------------//
-mailer.SMTP = {
-    host: 'smtp.gmail.com', 
-    port:587,
-    use_authentication: true, 
-    user: 'dreamteambmwfs2017@gmail.com', 
-    pass: 'dreamteamBMWFS'
-};
+var sender = mailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'dreamteambmwfs2017@gmail.com',
+        pass: 'dreamteamBMWFS'
+    }
+});
 //----------------------------------------------------------------------------//
 
 //---------------------- SERIAL COMMUNICATION (Arduino) ----------------------//
@@ -105,7 +105,7 @@ parser.on('data', function(data) {
     io.emit('newPicture',(imageName+'.jpg'));
     });
     fs.readFile('public/'+imageName, function (err, data) {
-      mailer.send_mail({       
+      sender.sendMail({       
         sender: 'dreamteambmwfs2017@gmail.com',
         to: 'dreamteambmwfs2017@gmail.com',
         subject: 'Here is your picture!',
