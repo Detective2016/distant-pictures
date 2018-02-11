@@ -112,6 +112,7 @@ parser.on('data', function(data) {
         body: 'Please see attached for the latest photo you have taken using the mini webcam',
         attachments: [{'filename': 'myPic.jpg', 'content': 'hello world'}]
       })
+      console.log('Data:', data);
     });
   }
 });
