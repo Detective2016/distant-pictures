@@ -28,6 +28,8 @@ var SerialPort = require('serialport'); // serial library
 var Readline = SerialPort.parsers.Readline; // read serial data as lines
 //-- Addition:
 var NodeWebcam = require( "node-webcam" );// load the webcam module
+var mailer = require('nodemailer');
+const fs = require('fs');
 
 //---------------------- WEBAPP SERVER SETUP ---------------------------------//
 // use express to create the simple webapp
@@ -74,7 +76,15 @@ var opts = { //These Options define how the webcam is operated.
 var Webcam = NodeWebcam.create( opts ); //starting up the webcam
 //----------------------------------------------------------------------------//
 
-
+//---------------------- EMAIL SETUP (SMTP) ----------------------//
+mailer.SMTP = {
+    host: 'smtp.gmail.com', 
+    port:587,
+    use_authentication: true, 
+    user: 'dreamteambmwfs2017@gmail.com', 
+    pass: 'dreamteamBMWFS'
+};
+//----------------------------------------------------------------------------//
 
 //---------------------- SERIAL COMMUNICATION (Arduino) ----------------------//
 // start the serial port connection and read on newlines
@@ -94,6 +104,18 @@ parser.on('data', function(data) {
     NodeWebcam.capture('public/'+imageName, opts, function( err, data ) {
     io.emit('newPicture',(imageName+'.jpg'));
     });
+    fs.readFile('public/'+imageName, function (err, data) {
+    mailer.send_mail({       
+        sender: 'dreamteambmwfs2017@gmail.com',
+        to: 'dreamteambmwfs2017@gmail.com',
+        subject: 'Here is your picture!',
+        body: 'Please see attached for the latest photo you\'ve taken',
+        attachments: [{'pic.jpg': imageName, 'content': data}]
+    }), function(err, success) {
+        if (err) {
+            // Handle error
+        }
+    }
   }
 });
 //----------------------------------------------------------------------------//
