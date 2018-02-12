@@ -29,6 +29,13 @@ function takePicture(){
   socket.emit('takePicture');
 }
 
+// get the email address from the input box
+function sendMessage() {
+    var input = document.getElementById("input").value;
+    socket.emit('message',input);
+    document.getElementById("input").value="";
+}
+
 //-- Addition: This function receives the new image name and applies it to html element.
 
 socket.on('newPicture', function(msg) {
@@ -41,12 +48,12 @@ socket.on('server-msg', function(msg) {
   console.log('msg:', msg);
   switch (msg) {
     case "light":
-      document.body.style.backgroundColor = "white";
-      console.log("white")
+      document.body.style.backgroundColor = "LightBlue";
+      console.log("light blue")
       break;
     case "dark":
-      document.body.style.backgroundColor = "black";
-      console.log("black");
+      document.body.style.backgroundColor = "BlueViolet";
+      console.log("blue voilet");
       break;
     default:
       //console.log("something else");

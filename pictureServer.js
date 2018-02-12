@@ -84,6 +84,14 @@ var sender = mailer.createTransport({
         pass: 'dreamteamBMWFS'
     }
 });
+
+var email = '';
+io.on('connect', function(socket) {
+        socket.on('message', (data)=>{ // If we get a new message from the client we process it;
+        console.log(data);
+	email = data;
+      });
+});
 //----------------------------------------------------------------------------//
 
 //---------------------- SERIAL COMMUNICATION (Arduino) ----------------------//
@@ -92,7 +100,6 @@ const serial = new SerialPort(process.argv[2], {});
 const parser = new Readline({
   delimiter: '\r\n'
 });
-
 // Read data that is available on the serial port and send it to the websocket
 serial.pipe(parser);
 parser.on('data', function(data) {
@@ -103,16 +110,13 @@ parser.on('data', function(data) {
     console.log('saving picture with picture name: '+ imageName);
     NodeWebcam.capture('public/'+imageName, opts, function( err, data ) {
       io.emit('newPicture',(imageName+'.jpg'));
-    });
-    fs.readFile('public/'+imageName+'.jpg', function (err, data) {
-      sender.sendMail({       
+      sender.sendMail({
         sender: 'dreamteambmwfs2017@gmail.com',
-        to: 'dreamteambmwfs2017@gmail.com',
+        to: email,
         subject: 'Here is your picture!',
-        body: 'Please see attached for the latest photo you have taken using the mini webcam',
+        html: '<b>Please see attached for the latest photo you have taken using the mini webcam</b>',
         attachments: [{'filename': 'myPic.jpg', 'path': 'public/'+imageName+'.jpg'}]
       })
-      console.log('Data:', data);
     });
   }
 });

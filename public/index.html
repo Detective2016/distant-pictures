@@ -6,10 +6,12 @@
         <script src="/socket.io/socket.io.js"></script>
     </head>
     <body>
-        <body bgcolor="#000">
+        <body bgcolor="#6FB8E7">
         <button onclick="ledON()">LED ON</button>
         <button onclick="ledOFF()">LED OFF</button>
         <button onclick="takePicture()">Take a picture</button>
+	<input type="text" id="input" value="">
+	<button onclick="sendMessage()">Let's Email</button>
       </br>
         <img src="" id= "pictureContainer" alt="WebCam image  made by the webserver">
         <script src="client.js"></script>
